@@ -13,14 +13,14 @@ let keys = {};
 let scoreLeft = 0;
 let scoreRight = 0;
 
-let running = false; // controla se o jogo está rodando
+let running = false; // controla se o jogo está rodando(isso tem relação com o botão d jogar)
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.fillStyle = "white";
 
-  // paddles
+  // raquetes
   ctx.fillRect(10, leftY, paddleWidth, paddleHeight);
   ctx.fillRect(canvas.width - 20, rightY, paddleWidth, paddleHeight);
 
@@ -44,34 +44,34 @@ function draw() {
 function update() {
   if (!running) return;
 
-  // Move paddles
+  // movimentação das raquetes
   if (keys['w']) leftY -= 5;
   if (keys['s']) leftY += 5;
   if (keys['ArrowUp']) rightY -= 5;
   if (keys['ArrowDown']) rightY += 5;
 
-  // Keep paddles on screen
+  // manter raquetes na tela
   leftY = Math.max(0, Math.min(canvas.height - paddleHeight, leftY));
   rightY = Math.max(0, Math.min(canvas.height - paddleHeight, rightY));
 
-  // Move ball
+  // movimentação da bola
   ballX += ballVX;
   ballY += ballVY;
 
-  // Bounce top/bottom
+  // fazer a bola bater de um lado para o outro
   if (ballY < 0 || ballY > canvas.height) ballVY *= -1;
 
-  // Collision left paddle
+  // Colisão da raquete direita
   if (ballX < 10 + paddleWidth && ballY > leftY && ballY < leftY + paddleHeight) {
     ballVX *= -1;
   }
 
-  // Collision right paddle
+  // Colisão da raquete esquerda
   if (ballX > canvas.width - 10 - paddleWidth && ballY > rightY && ballY < rightY + paddleHeight) {
     ballVX *= -1;
   }
 
-  // Reset if out of bounds + atualizar placar
+  // Redefinir se estiver fora dos limites para atualizar o placar
   if (ballX < 0) {
     scoreRight++;
     resetBall();
@@ -97,11 +97,12 @@ function loop() {
 window.addEventListener('keydown', e => keys[e.key] = true);
 window.addEventListener('keyup', e => keys[e.key] = false);
 
-// Clicar no botão inicia o jogo
+// Botão pra fazer o jogo iniciar
 startBtn.addEventListener('click', () => {
-  menu.style.display = 'none';  // esconde menu
+  menu.style.display = 'none';  // faz o menu sumir
   canvas.style.display = 'block'; // mostra canvas
-  running = true; // ativa o jogo
+  running = true; // roda o jogo
 });
 
 loop();
+
