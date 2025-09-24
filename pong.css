@@ -1,0 +1,31 @@
+body{
+    margin: 0;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+canvas{
+    background: #111;
+    display: block;
+}
+#menu {
+  color: white;
+  text-align: center;
+}
+
+#menu h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+#menu button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
