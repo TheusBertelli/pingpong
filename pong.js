@@ -41,14 +41,31 @@ function draw() {
   ctx.fillText(scoreRight, canvas.width * 3 / 4, 30);
 }
 
+//function preverPosicaoY
+
 function update() {
   if (!running) return;
 
   // movimentação das raquetes
   if (keys['w']) leftY -= 5;
   if (keys['s']) leftY += 5;
-  if (keys['ArrowUp']) rightY -= 5;
-  if (keys['ArrowDown']) rightY += 5;
+  //if (keys['ArrowUp']) rightY -= 5;
+  //if (keys['ArrowDown']) rightY += 5
+  // ia do balacobaco
+
+// definindo a velociadade da ia.
+const iaSpeed = 2.5;
+
+// alinhando a bola com o centro da raquete
+let rightPaddleCenter = rightY + (paddleHeight / 2);
+
+
+if (rightPaddleCenter < ballY - 10){
+  rightY += iaSpeed;
+} else if (rightPaddleCenter > ballY + 10){
+  rightY -= iaSpeed;
+}
+
 
   // manter raquetes na tela
   leftY = Math.max(0, Math.min(canvas.height - paddleHeight, leftY));
@@ -105,4 +122,6 @@ startBtn.addEventListener('click', () => {
 });
 
 loop();
+
+
 
