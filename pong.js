@@ -2,6 +2,10 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 const menu = document.getElementById('menu');
 const startBtn = document.getElementById('startBtn');
+const modeSelect = document.getElementById('modeSelect');
+const backBtn = document.getElementById('backBtn'); // Captura o novo botão
+
+let gameMode = 'medio';
 
 const paddleHeight = 80, paddleWidth = 10;
 let leftY = (canvas.height - paddleHeight) / 2;
@@ -13,82 +17,87 @@ let keys = {};
 let scoreLeft = 0;
 let scoreRight = 0;
 
-let running = false; // controla se o jogo está rodando(isso tem relação com o botão d jogar)
+let running = false; 
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   ctx.fillStyle = "white";
 
-  // raquetes
+  // Raquetes
   ctx.fillRect(10, leftY, paddleWidth, paddleHeight);
   ctx.fillRect(canvas.width - 20, rightY, paddleWidth, paddleHeight);
 
-  // linha pontilhada central
+  // Linha central
   for (let y = 0; y < canvas.height; y += 20) {
     ctx.fillRect(canvas.width / 2 - 1, y, 2, 10);
   }
 
-  // bola
+  // Bola
   ctx.beginPath();
   ctx.arc(ballX, ballY, 8, 0, Math.PI * 2);
   ctx.fill();
 
-  // placar
+  // Placar
   ctx.font = "24px Arial";
   ctx.textAlign = "center";
   ctx.fillText(scoreLeft, canvas.width / 4, 30);
   ctx.fillText(scoreRight, canvas.width * 3 / 4, 30);
 }
 
-//function preverPosicaoY
+function preverPosicaoY() {
+  let distanciaX = (canvas.width - 20) - ballX; 
+  let tempoAteChegar = distanciaX / ballVX;
+  let yPrevisto = ballY + (ballVY * tempoAteChegar);
+
+  while (yPrevisto < 0 || yPrevisto > canvas.height) {
+    if (yPrevisto < 0) yPrevisto = Math.abs(yPrevisto); 
+    if (yPrevisto > canvas.height) yPrevisto = canvas.height - (yPrevisto - canvas.height); 
+  }
+  return yPrevisto;
+}
 
 function update() {
   if (!running) return;
 
-  // movimentação das raquetes
-  if (keys['w']) leftY -= 5;
-  if (keys['s']) leftY += 5;
-  //if (keys['ArrowUp']) rightY -= 5;
-  //if (keys['ArrowDown']) rightY += 5
-  // ia do balacobaco
+  if (keys['w'] || keys['W']) leftY -= 5;
+  if (keys['s'] || keys['S']) leftY += 5;
 
-// definindo a velociadade da ia.
-const iaSpeed = 2.5;
+  if (gameMode === '2p'){
+    if(keys['ArrowUp']) rightY -= 5;
+    if(keys['ArrowDown']) rightY += 5;
+  } else {
+    let iaSpeed = 0;
+    let alvoY = canvas.height / 2;
+    
+    if(gameMode === 'facil'){
+      iaSpeed = 2.5;
+      alvoY = ballY; 
+    } 
+    else if(gameMode === 'medio'){
+      iaSpeed = 4;
+      alvoY = ballY;
+    }
+    else if(gameMode === 'dificil'){
+      iaSpeed = 5.5; 
+      if(ballVX > 0) alvoY = preverPosicaoY();
+    }
 
-// alinhando a bola com o centro da raquete
-let rightPaddleCenter = rightY + (paddleHeight / 2);
+    let centroRaqueteIA  = rightY + (paddleHeight / 2);
+    if (centroRaqueteIA < alvoY - 10) rightY += iaSpeed; 
+    else if (centroRaqueteIA > alvoY + 10) rightY -= iaSpeed;
+  }
 
-
-if (rightPaddleCenter < ballY - 10){
-  rightY += iaSpeed;
-} else if (rightPaddleCenter > ballY + 10){
-  rightY -= iaSpeed;
-}
-
-
-  // manter raquetes na tela
   leftY = Math.max(0, Math.min(canvas.height - paddleHeight, leftY));
   rightY = Math.max(0, Math.min(canvas.height - paddleHeight, rightY));
 
-  // movimentação da bola
   ballX += ballVX;
   ballY += ballVY;
 
-  // fazer a bola bater de um lado para o outro
   if (ballY < 0 || ballY > canvas.height) ballVY *= -1;
 
-  // Colisão da raquete direita
-  if (ballX < 10 + paddleWidth && ballY > leftY && ballY < leftY + paddleHeight) {
-    ballVX *= -1;
-  }
+  if (ballX < 10 + paddleWidth && ballY > leftY && ballY < leftY + paddleHeight) ballVX *= -1;
+  if (ballX > canvas.width - 10 - paddleWidth && ballY > rightY && ballY < rightY + paddleHeight) ballVX *= -1;
 
-  // Colisão da raquete esquerda
-  if (ballX > canvas.width - 10 - paddleWidth && ballY > rightY && ballY < rightY + paddleHeight) {
-    ballVX *= -1;
-  }
-
-  // Redefinir se estiver fora dos limites para atualizar o placar
   if (ballX < 0) {
     scoreRight++;
     resetBall();
@@ -114,14 +123,28 @@ function loop() {
 window.addEventListener('keydown', e => keys[e.key] = true);
 window.addEventListener('keyup', e => keys[e.key] = false);
 
-// Botão pra fazer o jogo iniciar
+// Iniciar Jogo
 startBtn.addEventListener('click', () => {
-  menu.style.display = 'none';  // faz o menu sumir
-  canvas.style.display = 'block'; // mostra canvas
-  running = true; // roda o jogo
+  gameMode = modeSelect.value; 
+  menu.style.display = 'none';  
+  canvas.style.display = 'block'; 
+  backBtn.style.display = 'block'; // Mostra o botão de voltar
+  running = true; 
+});
+
+// Lógica de Voltar ao Menu
+backBtn.addEventListener('click', () => {
+  running = false; // Para o jogo
+  menu.style.display = 'block'; // Mostra menu
+  canvas.style.display = 'none'; // Esconde jogo
+  backBtn.style.display = 'none'; // Esconde o próprio botão
+  
+  // Reseta o estado do jogo
+  scoreLeft = 0;
+  scoreRight = 0;
+  resetBall();
+  leftY = (canvas.height - paddleHeight) / 2;
+  rightY = (canvas.height - paddleHeight) / 2;
 });
 
 loop();
-
-
-

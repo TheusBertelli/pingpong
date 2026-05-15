@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>PONG</title>
     <link rel="stylesheet" href="pong.css">
 </head>
+
 <body>
     <div id="menu">
-    <h1>PONG</h1>
-    <button id="startBtn">Jogar</button>
-  </div>
+        <h1>PONG</h1>
+        <select id="modeSelect" style="font-size: 18px; padding: 5px; margin-bottom: 20px; border-radius: 4px;">
+            <option value="facil">1 Jogador - Fácil</option>
+            <option value="medio" selected>1 Jogador - Médio</option>
+            <option value="dificil">1 Jogador - Difícil</option>
+            <option value="2p">2 Jogadores</option>
+        </select>
+        <br>
+        <button id="startBtn">Jogar</button>
+    </div>
+
     <canvas id="game" width="600" height="400"></canvas>
+    ]<canvas id="game" width="600" height="400"></canvas>
     
+    <button id="backBtn" style="display: none;">Voltar ao Menu</button>
+
 </body>
 <script src="pong.js"></script>
+
 </html>
