@@ -1,29 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PONG</title>
+    <title>PONG EVOLUTION</title>
     <link rel="stylesheet" href="pong.css">
 </head>
 
 <body>
     <div id="menu">
         <h1>PONG</h1>
-        <select id="modeSelect" style="font-size: 18px; padding: 5px; margin-bottom: 20px; border-radius: 4px;">
+        <select id="modeSelect" style="font-size: 18px; padding: 5px; margin-bottom: 15px; border-radius: 4px;">
             <option value="facil">1 Jogador - Fácil</option>
             <option value="medio" selected>1 Jogador - Médio</option>
             <option value="dificil">1 Jogador - Difícil</option>
             <option value="2p">2 Jogadores</option>
         </select>
         <br>
+
+        <div style="margin-bottom: 20px; font-size: 18px;">
+            <label style="cursor: pointer; margin-right: 15px;">
+                <input type="checkbox" id="checkPoderes" checked> Poderes
+            </label>
+            <label style="cursor: pointer;">
+                <input type="checkbox" id="checkSons" checked> Sons
+            </label>
+        </div>
+
         <button id="startBtn">Jogar</button>
+        <button id="howToPlayBtn">Como Jogar</button>
+    </div>
+
+    <div id="instructions" style="display: none; color: white; text-align: center;">
+        <h2>Como Jogar</h2>
+        <div
+            style="display: flex; gap: 30px; justify-content: space-around; width: 570px; margin: 20px auto; text-align: left; background: #181818; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+            <div>
+                <h3 style="color: #00ffff; margin-top: 0;">Jogador 1 (Esquerda)</h3>
+                <p><strong>W / S:</strong> Mover Raquete</p>
+                <p><strong>E:</strong> Teleporte Especial</p>
+                <p><strong>Q:</strong> Congelar a Bola</p>
+            </div>
+            <div style="border-left: 1px solid #333; padding-left: 30px;">
+                <h3 style="color: #ff4d4d; margin-top: 0;">Jogador 2 (Direita)</h3>
+                <p><strong>▲ / ▼:</strong> Mover Raquete</p>
+                <p><strong>◀ (Seta Esq):</strong> Teleporte Especial</p>
+                <p><strong>▶ (Seta Dir):</strong> Congelar a Bola</p>
+            </div>
+        </div>
+        <button id="closeInstructionsBtn">Voltar</button>
     </div>
 
     <canvas id="game" width="600" height="400"></canvas>
-    ]<canvas id="game" width="600" height="400"></canvas>
-    
+
+    <div id="hud" style="display: none; width: 600px; color: white; font-family: Arial, sans-serif; margin-top: 12px;">
+        <div
+            style="display: flex; justify-content: space-between; background: #111; padding: 12px; border-radius: 6px; border: 1px solid #222; box-shadow: 0px 4px 10px rgba(0,0,0,0.5);">
+            <div id="p1PowerHUD">
+                <div style="color: #00ffff; font-weight: bold; font-size: 14px; margin-bottom: 4px;">P1 (Esquerda)</div>
+                <div id="p1TeleportCD" style="font-size: 13px; margin-bottom: 2px;">Teleporte (E): PRONTO</div>
+                <div id="p1FreezeCD" style="font-size: 13px;">Congelar (Q): PRONTO</div>
+            </div>
+            <div id="p2PowerHUD" style="text-align: right;">
+                <div style="color: #ff4d4d; font-weight: bold; font-size: 14px; margin-bottom: 4px;">P2 (Direita)</div>
+                <div id="p2TeleportCD" style="font-size: 13px; margin-bottom: 2px;">Teleporte (◀): PRONTO</div>
+                <div id="p2FreezeCD" style="font-size: 13px;">Congelar (▶): PRONTO</div>
+            </div>
+        </div>
+    </div>
+
     <button id="backBtn" style="display: none;">Voltar ao Menu</button>
 
 </body>

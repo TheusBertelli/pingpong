@@ -2,15 +2,18 @@ body {
     margin: 0;
     background-color: black;
     display: flex;
-    flex-direction: column; /* Esta linha organiza os itens de cima para baixo */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    font-family: Arial, sans-serif;
+    user-select: none;
 }
 
 canvas {
     background: #111;
-    display: none; /* Garante que o jogo comece invisível */
+    display: none;
+    border: 2px solid #222;
 }
 
 #menu {
@@ -23,23 +26,27 @@ canvas {
   margin-bottom: 20px;
 }
 
-#menu button {
+#startBtn, #howToPlayBtn, #closeInstructionsBtn {
   padding: 10px 20px;
   font-size: 18px;
-  background-color: white;
-  color: black;
   border: none;
   cursor: pointer;
   border-radius: 6px;
+  margin: 5px;
+  transition: background 0.2s;
 }
 
-#menu button:hover {
-  background-color: #ddd;
-}
+#startBtn { background-color: white; color: black; }
+#startBtn:hover { background-color: #ddd; }
 
-/* Estilo do botão de voltar */
+#howToPlayBtn { background-color: #444; color: white; }
+#howToPlayBtn:hover { background-color: #555; }
+
+#closeInstructionsBtn { background-color: #ff4d4d; color: white; }
+#closeInstructionsBtn:hover { background-color: #ff3333; }
+
 #backBtn {
-    margin-top: 20px;
+    margin-top: 15px;
     padding: 10px 20px;
     font-size: 16px;
     background-color: #ff4d4d;
