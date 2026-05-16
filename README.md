@@ -24,4 +24,4 @@ Além do modo clássico (PvP ou contra a Máquina em 3 dificuldades), adicionei:
 ## Como jogar
 
 O projeto roda direto no navegador, não precisa instalar nada.
-Acesse o jogo online aqui:https://theusbertelli.github.io/pong-evolution/
+Acesse o jogo online aqui: https://theusbertelli.github.io/pong-evolution/
