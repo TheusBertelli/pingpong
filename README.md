@@ -24,7 +24,4 @@ Além do modo clássico (PvP ou contra a Máquina em 3 dificuldades), adicionei:
 ## Como jogar
 
 O projeto roda direto no navegador, não precisa instalar nada.
-Acesse o jogo online aqui: https://theusbertelli.github.io/pingpong/
-Ou, se preferir rodar localmente:
-1. Clone este repositório.
-2. Abra o arquivo `index.html` em qualquer navegador moderno.
+Acesse o jogo online aqui:https://theusbertelli.github.io/pong-evolution/
