@@ -3,74 +3,145 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PONG EVOLUTION</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="pong.css">
 </head>
 
-<body>
-    <div id="menu">
-        <h1>PONG</h1>
-        <select id="modeSelect" style="font-size: 18px; padding: 5px; margin-bottom: 15px; border-radius: 4px;">
-            <option value="facil">1 Jogador - Fácil</option>
-            <option value="medio" selected>1 Jogador - Médio</option>
-            <option value="dificil">1 Jogador - Difícil</option>
-            <option value="2p">2 Jogadores</option>
-        </select>
-        <br>
+<body class="theme-dark">
 
-        <div style="margin-bottom: 20px; font-size: 18px;">
-            <label style="cursor: pointer; margin-right: 15px;">
-                <input type="checkbox" id="checkPoderes" checked> Poderes
-            </label>
-            <label style="cursor: pointer;">
-                <input type="checkbox" id="checkSons" checked> Sons
-            </label>
+    <div id="menu" class="glass-panel">
+        <h1 class="game-title">PONG <span class="evolution">EVO</span></h1>
+
+        <div class="settings-grid">
+            <div class="input-group">
+                <label>Modo de Jogo</label>
+                <select id="modeSelect" class="ui-select">
+                    <option value="facil">1P - Fácil</option>
+                    <option value="medio" selected>1P - Médio</option>
+                    <option value="dificil">1P - Difícil</option>
+                    <option value="2p">2 Jogadores</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Estilo de Partida</label>
+                <select id="styleSelect" class="ui-select chaos-select">
+                    <option value="classic" selected>Clássico</option>
+                    <option value="chaos">Modo Caos</option>
+                    <option value="collapse">Zona de Colapso</option>
+                    <option value="trench">Trincheira Tática</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Tema Visual</label>
+                <select id="themeSelect" class="ui-select">
+                    <option value="dark" selected>Padrão</option>
+                    <option value="light">Claro</option>
+                    <option value="retro">Retro</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Placar Limite</label>
+                <input type="number" id="maxScoreInput" value="5" min="1" max="99" class="ui-select text-center">
+            </div>
         </div>
 
-        <button id="startBtn">Jogar</button>
-        <button id="howToPlayBtn">Como Jogar</button>
-    </div>
-
-    <div id="instructions" style="display: none; color: white; text-align: center;">
-        <h2>Como Jogar</h2>
-        <div
-            style="display: flex; gap: 30px; justify-content: space-around; width: 570px; margin: 20px auto; text-align: left; background: #181818; padding: 20px; border-radius: 8px; border: 1px solid #333;">
-            <div>
-                <h3 style="color: #00ffff; margin-top: 0;">Jogador 1 (Esquerda)</h3>
-                <p><strong>W / S:</strong> Mover Raquete</p>
-                <p><strong>E:</strong> Teleporte Especial</p>
-                <p><strong>Q:</strong> Congelar a Bola</p>
-            </div>
-            <div style="border-left: 1px solid #333; padding-left: 30px;">
-                <h3 style="color: #ff4d4d; margin-top: 0;">Jogador 2 (Direita)</h3>
-                <p><strong>▲ / ▼:</strong> Mover Raquete</p>
-                <p><strong>◀ (Seta Esq):</strong> Teleporte Especial</p>
-                <p><strong>▶ (Seta Dir):</strong> Congelar a Bola</p>
-            </div>
+        <div class="toggles-container">
+            <label class="custom-checkbox"><input type="checkbox" id="checkPoderes" checked> <span
+                    class="checkmark"></span> Poderes</label>
+            <label class="custom-checkbox"><input type="checkbox" id="checkSons" checked> <span
+                    class="checkmark"></span> Efeitos Sonoros</label>
+            <label class="custom-checkbox"><input type="checkbox" id="checkBloom" checked> <span
+                    class="checkmark"></span> Brilho (Bloom)</label>
+            <label class="custom-checkbox"><input type="checkbox" id="checkAnimas" checked> <span
+                    class="checkmark"></span> Animações Extras</label>
         </div>
-        <button id="closeInstructionsBtn">Voltar</button>
-    </div>
 
-    <canvas id="game" width="600" height="400"></canvas>
-
-    <div id="hud" style="display: none; width: 600px; color: white; font-family: Arial, sans-serif; margin-top: 12px;">
-        <div
-            style="display: flex; justify-content: space-between; background: #111; padding: 12px; border-radius: 6px; border: 1px solid #222; box-shadow: 0px 4px 10px rgba(0,0,0,0.5);">
-            <div id="p1PowerHUD">
-                <div style="color: #00ffff; font-weight: bold; font-size: 14px; margin-bottom: 4px;">P1 (Esquerda)</div>
-                <div id="p1TeleportCD" style="font-size: 13px; margin-bottom: 2px;">Teleporte (E): PRONTO</div>
-                <div id="p1FreezeCD" style="font-size: 13px;">Congelar (Q): PRONTO</div>
-            </div>
-            <div id="p2PowerHUD" style="text-align: right;">
-                <div style="color: #ff4d4d; font-weight: bold; font-size: 14px; margin-bottom: 4px;">P2 (Direita)</div>
-                <div id="p2TeleportCD" style="font-size: 13px; margin-bottom: 2px;">Teleporte (◀): PRONTO</div>
-                <div id="p2FreezeCD" style="font-size: 13px;">Congelar (▶): PRONTO</div>
-            </div>
+        <div class="action-buttons">
+            <button id="startBtn" class="btn-primary">INICIAR JOGO</button>
+            <button id="howToPlayBtn" class="btn-secondary">CONTROLES</button>
         </div>
     </div>
 
-    <button id="backBtn" style="display: none;">Voltar ao Menu</button>
+    <div id="instructions" class="glass-panel" style="display: none;">
+        <h2 class="game-title" style="font-size: 32px; margin-bottom: 20px;">CONTROLES</h2>
+        <div class="instructions-box">
+            <div class="player-instructions">
+                <h3 class="color-p1">JOGADOR 1</h3>
+                <p><span>W / S</span> Mover Raquete</p>
+                <p><span>E</span> Congelar </p>
+                <p><span>Q</span> Dash </p>
+            </div>
+            <div class="divider"></div>
+            <div class="player-instructions">
+                <h3 class="color-p2">JOGADOR 2</h3>
+                <p><span>▲ / ▼</span> Mover Raquete</p>
+                <p><span>◀</span> Dash </p>
+                <p><span>▶</span> Congelar </p>
+            </div>
+        </div>
+
+        <div id="modeDescription" class="chaos-desc">
+            <strong>MODO CLÁSSICO:</strong><br>O bom e velho Pong de sempre. Use suas habilidades no tempo certo para
+            enganar o adversário.
+        </div>
+
+        <button id="closeInstructionsBtn" class="btn-danger" style="margin-top: 15px;">VOLTAR</button>
+    </div>
+
+    <canvas id="game" width="700" height="450"></canvas>
+
+    <div id="hud" class="hud-container" style="display: none;">
+        <div class="hud-box">
+            <div id="p1PowerHUD" class="hud-side">
+                <div class="color-p1 hud-title">P1 (Esq)</div>
+                <div id="p1TeleportCD" class="hud-stat">Dash: PRONTO</div>
+                <div id="p1FreezeCD" class="hud-stat">Congelar: PRONTO</div>
+            </div>
+            <div id="p2PowerHUD" class="hud-side" style="text-align: right;">
+                <div class="color-p2 hud-title">P2 (Dir)</div>
+                <div id="p2TeleportCD" class="hud-stat">Dash: PRONTO</div>
+                <div id="p2FreezeCD" class="hud-stat">Congelar: PRONTO</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobileControls" class="mobile-controls">
+        <div class="touch-group">
+            <button data-key="w" class="touch-btn move-btn">▲</button>
+            <button data-key="s" class="touch-btn move-btn">▼</button>
+            <div class="skills-group">
+                <button data-key="e" class="touch-btn skill-btn" style="color: var(--p1-color);"> Dash</button>
+                <button data-key="q" class="touch-btn skill-btn" style="color: var(--p1-color);"> Congelar</button>
+            </div>
+        </div>
+
+        <div class="touch-group" id="p2MobileControls" style="display: none;">
+            <button data-key="ArrowUp" class="touch-btn move-btn">▲</button>
+            <button data-key="ArrowDown" class="touch-btn move-btn">▼</button>
+            <div class="skills-group">
+                <button data-key="ArrowLeft" class="touch-btn skill-btn" style="color: var(--p2-color);">
+                    Dash</button>
+                <button data-key="ArrowRight" class="touch-btn skill-btn" style="color: var(--p2-color);">
+                    Congelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameActions" class="game-actions" style="display: none;">
+        <button id="pauseBtn" class="btn-warning">PAUSAR</button>
+        <button id="backBtn" class="btn-danger">MENU</button>
+    </div>
 
 </body>
 <script src="pong.js"></script>
